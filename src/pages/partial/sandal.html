@@ -1,0 +1,133 @@
+<h1>Sandal 源码解析</h1>
+<div class="row">
+  <aside class="col-xs-3">
+    <ul class="nav nav-pills nav-stacked" data-track="sandal">
+      <li class="nav-item">
+        <a class="nav-link" href="#sandalInfo">
+          <i class="fa fa-circle-o"></i> 概述</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#sandalQueries">
+          <i class="fa fa-circle-o"></i> media-queries</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fa fa-circle-o"></i> Link</a>
+      </li>
+    </ul>
+  </aside>
+  <div class="col-xs-9">
+    <div class="jumbotron" id="sandalInfo">
+      <h2>概述</h2>
+      <p>Sandal 项目中的 Scss 文件，可以看成有 2 部分组成，它们的包含关系如下：</p>
+      <pre><code class="css">
+core
+  ┣━ reset
+  ┗━ function
+     ┣━ variables
+     ┣━ mixin
+     ┣━ media-queries
+     ┗━ animation
+ext
+  ┣━ icons
+  ┣━ helper
+  ┣━ grid
+  ┗━ page-slide
+      </code></pre>
+      <p>对于主体框架（core），我们可以以两种方式使引入，根据需要决定吧：</p>
+      <pre><code class="scss">
+// 集成了所有的基础功能，并且不输出任何样式
+@import 'node_modules/sass-sandal/function';
+
+// 在引入基础功能的前提下，引入重置样式 _reset.scss，其实主体就是 normallize.css 啦！
+@import 'node_modules/sass-sandal/core';
+      </code></pre>
+
+      <h2>文件功能简述</h2>
+      <p>sandal 包括两个集合文件（core，function）和两个文件夹（core，ext）。其中 core 文件夹中为核心基础文件，包括 variables，media-queries，mixin，animation，reset；ext文件夹中是一些扩展文件，目前包括 svg icons，grid 网格系统，helper 基础 class，page-slide 为页面切换 class。</p>
+      <p>两个集合文件（core，function）导入的都是 core 中的文件，区别在于 core 除了提供基本功能之外还会生成一份 reset 样式，而 function 则只提供基本功能。至于 ext 中的文件则属于额外的一些模块扩展，可根据需求导入。</p>
+
+      <h3>core 文件</h3>
+      <table class="table table-desc">
+        <thead>
+          <tr>
+            <th>模块名</th>
+            <th>作用描述</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://github.com/marvin1023/sandal/blob/master/core/_variables.scss">variables</a></td>
+            <td>负责基础变量的文件，如常用的颜色，字体等变量。这个源码自己看看即可。</td>
+          </tr>
+          <tr>
+            <td>media-queries</td>
+            <td>负责响应式断点判断的文件，来自 paranoida 的 sass-mediaqueries。</td>
+          </tr>
+          <tr>
+            <td>mixin</td>
+            <td>负责功能方面的文件。这里我们大概分成三个部分，一个是混合部分即mixin（，一个是 placeholder 选择器部分即 %，最后就是我们的 function 函数部分。常用的 include 及 extend 就是在这里定义的。</td>
+          </tr>
+          <tr>
+            <td>animation</td>
+            <td>提供六组简单实用动画：fade-in/out, shrink-in/out, up-in/out, down-in/out，left-in/out，right-in/out。默认不产生样式，通过 include 调用。</td>
+          </tr>
+          <tr>
+            <td>reset</td>
+            <td>在 normalize 的基础上，根据目前我们大家的使用习惯进行了一些归零行动，及基础文字颜色，clearfix，box-sizing 等。</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>ext 文件</h3>
+      <table class="table table-desc">
+        <thead>
+          <tr>
+            <th>模块名</th>
+            <th>作用描述</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>helper</td>
+            <td>提供常用的基础 class，如 clearfix, full-width 等。</td>
+          </tr>
+          <tr>
+            <td>grid</td>
+            <td>移动端的网格系统，分为 row 和 col。</td>
+          </tr>
+          <tr>
+            <td>icons</td>
+            <td>分为绘制的 icon 和 svg 图标两种，可参考 icons 文件夹中的 icons.html。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="jumbotron" id="sandalQueries">
+     <h2>media querie</h2>
+     <p>media query 其实是引用自另一个开源项目 <a href="http://paranoida.github.io/sass-mediaqueries/">Sass MediaQueries</a>。</p>
+     <pre><code class="css">
+@mixin mq($args...) {
+  $media-type: 'only screen';
+  $media-type-key: 'media-type';
+  $args: keywords($args);
+  $expr: '';
+
+  @if map-has-key($args, $media-type-key) {
+    $media-type: map-get($args, $media-type-key);
+    $args: map-remove($args, $media-type-key);
+  }
+
+  @each $key, $value in $args {
+    @if $value {
+      $expr: "#{$expr} and (#{$key}: #{$value})";
+    }
+  }
+
+  @media #{$media-type} #{$expr} {
+    @content;
+  }
+}
+     </code></pre>
+    </div>
+  </div>
+</div>
