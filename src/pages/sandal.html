@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  @@include('./layout/head.html')
+  <body>
+    @@include('./layout/nav.html')
+    <div class="container">
+      <h1>Sandal 源码解析</h1>
+      <div class="row">
+        <aside class="col-xs-3">
+          @@include('./partial/sandal-nav.html')
+        </aside>
+        <div class="col-xs-9">
+          @@include('./partial/sandal-info.html')
+          @@include('./partial/sandal-media-queries.html')
+        </div>
+      </div>
+    </div>
+    @@include('./layout/foot.html')
+  </body>
+</html>
