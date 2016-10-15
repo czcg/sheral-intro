@@ -1,0 +1,29 @@
+@charset 'utf-8';
+
+/* shandal page style */
+.color-block {
+  display: flex;
+  justify-content: space-between;
+
+  > div {
+    @include size(30%, 100px);
+
+    line-height: 100px;
+    text-align: center;
+    color: #fff;
+    font-size: 0.8em;
+    background-color: green;
+
+    &:first-child {
+      background-color: mix(white, green, 40%);
+    }
+
+    &:last-child {
+      background-color: mix(black, green, 40%);
+    }
+  }
+}
+
+[data-animation-demo] {
+  border-radius: 0;
+}

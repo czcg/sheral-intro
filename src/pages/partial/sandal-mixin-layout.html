@@ -1,0 +1,221 @@
+<div class="jumbotron" id="sandalMixinLayout">
+  <h2>布局 @mixin</h2>
+  <ul class="list-unstyled mixin-list">
+    <li>
+      <p><strong>fixed:</strong> 给容器设置 fixed 定位</p>
+      <pre><code class="css">
+// 1. 不带参数，top 置顶
+.fix-top {
+  @include fixed;
+}
+
+// 将会编译成
+.fix-top {
+  position: fixed;
+  left: 0; right: 0;
+  top: 0;
+}
+      </code></pre>
+      <pre><code class="css">
+// 2. 传入数值，为 top 赋值
+.fix-px {
+  @include fixed(40px);
+}
+
+// 将会编译成
+.fix-px {
+  position: fixed;
+  left: 0; right: 0;
+  top: 40px;
+}
+      </code></pre>
+      <pre><code class="css">
+// 3. 传入 bottom 关键词，置底
+.fix-bottom {
+  @include fixed(bottom);
+}
+
+// 将会编译成
+.fix-bottom {
+  position: fixed;
+  left: 0; right: 0;
+  bottom: 0;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>justify:</strong> Flex 模式下的 space-between 对齐方式（感觉莫意义啊~~）</p>
+      <pre><code class="css">
+.demo {
+  @include justify;
+}
+
+// 将会编译成
+.demo {
+  display: flex;
+  justify-content: space-between;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>equal-table:</strong> 以表格布局方式等分一行中的容器</p>
+      <pre><code class="css">
+/*
+  默认为 li 子元素等分
+  可以传入指定子元素选择符参与等分
+  eg: equal-table('a')
+*/
+ul {
+  @include equal-table;
+}
+
+// 将会编译成
+ul {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+ul li {
+  display: table-cell;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>equal-flex:</strong> 以 flex 布局来等分一行中的子元素</p>
+      <pre><code class="css">
+/*
+  与 equal-table 类似，
+  也可传入指定子元素选择符
+  eg: equal-table('a')
+*/
+div {
+  @include equal-flex('a');
+}
+
+// 将会编译成
+div {
+  display: flex;
+}
+div a {
+  flex: 1;
+  width: 1%;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>line-equal-gap:</strong> 使用这个 @mixin 产生和 flex 布局中 <code>jusify-content: space-around | space-between</code> 那样的效果，所不同的是，这里是指定 gap 宽度而不管容器宽度的</p>
+      <pre><code class="css">
+/*
+  该 @mixin 可定制 3 个参数：
+  $gap:   间隔宽度，默认 10px
+  $child: 与上例类似，可指定子元素选择符，默认 'li'
+  $lr:    指定是否需要在两头也设置 gap，默认是 true
+*/
+div {
+  @include line-equal-gap('span');
+}
+
+// 将会编译成
+div {
+  display: flex;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+div span {
+  flex: 1;
+  width: 1%;
+}
+div span:not(:first-of-type) {
+  margin-left: 10px;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>line-equal-item:</strong> 感觉这个就是 justify-content 的排布啊，默认为 <code>space-around</code> 排布，传入 <code>false</code> 参数则为 <code>space-between</code> 排布</p>
+      <pre><code class="css">
+/* 无参数（使用默认参数） */
+.demo1 {
+  @include line-equal-item;
+}
+
+// 将会编译成
+.demo1 {
+  display: flex;
+  justify-content: space-between;
+}
+demo1::before, demo1::after {
+  content: "";
+}
+      </code></pre>
+      <pre><code class="css">
+/* false 参数，不要两头的 gap */
+.demo2 {
+  @include line-equal-item(false);
+}
+
+// 将会编译成
+.demo2 {
+  display: flex;
+  justify-content: space-between;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>center-flex:</strong> 使用 flex 布局方式使容器中子元素居中，可传入 <code>x</code> 或 <code>y</code> 参数各自轴向居中，默认 <code>both</code>，横向和竖向同时居中</p>
+      <pre><code class="css">
+.center {
+  @include: center-flex;
+}
+
+// 将会编译成
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>center-translate:</strong> 传统居中方式，先绝对定位，用 <code>left: 50%</code> 或 <code>top: 50%</code> 偏移后再用 <code>translate</code> 来修正，同样，接受 <code>x</code> 或 <code>y</code> 传参，默认 <code>both</code></p>
+      <pre><code class="css">
+.center-y {
+  @include center-translate(y);
+}
+
+// 将会编译成
+.center-y {
+  position: absolute;
+  top: 50%;
+  transform: translate3d(0, -50%, 0);
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>object-wrap:</strong> 这个 @mixin ... 貌似没看出应用场景啊（呆若木鸡.jpg）</p>
+      <pre><code class="css">
+/*
+  接受两个参数
+  $percent: wrap 的百分比，默认 100%
+  $child: 用于子元素选择器，默认 'img'
+*/
+.wrap {
+  @include object-wrap($child: span)
+}
+
+// 将会编译成
+.wrap {
+  position: relative;
+  padding-top: 100%;
+  height: 0;
+}
+.wrap span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+      </code></pre>
+    </li>
+  </ul>
+</div>

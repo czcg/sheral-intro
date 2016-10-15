@@ -9,6 +9,7 @@
 // 自定义 scss 文件
 @import 'utils/functions';
 @import 'utils/mixins';
+@import 'utils/animate';
 
 @import "base/reset";
 @import 'base/typography';
@@ -16,3 +17,7 @@
 @import 'layout/nav';
 @import 'layout/jumbotron';
 @import 'layout/table';
+
+@import 'components/mask';
+
+@import 'pages/shandal';

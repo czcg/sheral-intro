@@ -1,0 +1,67 @@
+@charset 'UTF-8';
+
+$bzs: 200px; // 示例圆的大小
+$animateSort: (fade, shrink, down, up, left, right);
+
+
+.demo-ball {
+  @include size($bzs);
+  @include fixed(top 50% left 50%);
+  border-radius: 50%;
+  display: none;
+  background: $brand-success;
+  z-index: $zindex-modal;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  line-height: $bzs;
+  margin-top: $bzs / -2;
+  margin-left: $bzs / -2;
+  animation-duration: 1s;
+  animation-delay: 1s, 2s;
+}
+
+.mask {
+  animation: maskFadeIn 0.5s;
+
+  &::before {
+    content: '';
+    @include fixed(top 0 right 0 bottom 0 left 0);
+    background: rgba($gray-dark, 0.8);
+    z-index: $zindex-modal-bg;
+  }
+
+  .demo-ball {
+    display: block;
+
+    @each $animate in $animateSort {
+      &.#{$animate} {
+        @if $animate == nth($animateSort, 1) {
+          opacity: 1;
+        }
+        animation-name: #{$animate}Out, #{$animate}In;
+      }
+    }
+
+  }
+}
+
+@include animation-fade($name: maskFadeIn);
+
+@include animation-fade-in;
+@include animation-fade-out;
+
+@include animation-shrink-in;
+@include animation-shrink-out;
+
+@include animation-up-in;
+@include animation-up-out;
+
+@include animation-down-in;
+@include animation-down-out;
+
+@include animation-left-in;
+@include animation-left-out;
+
+@include animation-right-in;
+@include animation-right-out;

@@ -4,7 +4,7 @@
   <body>
     @@include('./layout/nav.html')
     <div class="container">
-      <h1>Sandal 源码解析</h1>
+      <h1>Sandal 功能模块解析</h1>
       <div class="row">
         <aside class="col-xs-3">
           @@include('./partial/sandal-nav.html')
@@ -12,9 +12,15 @@
         <div class="col-xs-9">
           @@include('./partial/sandal-info.html')
           @@include('./partial/sandal-media-queries.html')
+          @@include('./partial/sandal-mixin-utility.html')
+          @@include('./partial/sandal-mixin-layout.html')
+          @@include('./partial/sandal-mixin-halfpx.html')
+          @@include('./partial/sandal-mixin-misc.html')
+          @@include('./partial/sandal-mixin-animate.html')
         </div>
       </div>
     </div>
+    <div class="demo-ball"></div>
     @@include('./layout/foot.html')
   </body>
 </html>

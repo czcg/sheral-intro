@@ -1,9 +1,14 @@
 @charset 'utf-8';
 
 .jumbotron {
-  background-color: $gray-lightest;
+  background-color: #fff;
   border-radius: $border-radius;
   padding: 1em;
+
+  .mixin-list > li + li {
+    border-top: 1px solid $gray-lighter;
+    padding-top: 1em;
+  }
 }
 
 .jumb-fade-in {

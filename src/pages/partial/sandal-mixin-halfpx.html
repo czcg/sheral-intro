@@ -1,0 +1,116 @@
+<div class="jumbotron" id="sandalMixinHalfPx">
+  <h2>0.5px @mixin</h2>
+  <p>自苹果的智能手机 iPhone4 问世后，"retina" 一词就为人所津津乐道了。视网膜屏以 4 个像素描绘普通屏幕的 1 个像素，其显示的精致度大大提高了，因此，1px 宽度的细线，在 retina 屏上是 2 个物理像素的宽，使得 0.5px 的绘制宽度能够得以实现。下面介绍几种绘制 0.5px 的方法，在 sandal 中已经封装成 @mixin，已方便使用</p>
+
+  <h3>方法一：媒体查询</h3>
+  <p>该方法使用媒体查询，检查 webkit 浏览器的私有属性 <code>-webkit-min-device-pixel-ratio</code>，如果其值为 2 或 3(plus 机型) 则肯定支持 0.5px，该方法在 iOS9+ 中得以实现，使用场景不是很广泛，我们直接看源码吧</p>
+  <pre><code class="css">
+@mixin retina-one-px() {
+    @supports (border-width: 0.5px) {
+        @media only
+          screen and (-webkit-min-device-pixel-ratio: 2),
+          screen and (-webkit-min-device-pixel-ratio: 3) {
+            border-width: 0.5px;
+        }
+    }
+}
+
+// 调用
+.demo {
+  @include retina-one-px;
+  border-top-style: solid;
+}
+  </code></pre>
+
+  <h3>方法二：渐变背景</h3>
+  <p>其原理也很简单，绘制一个 50% 单位的纯色 linear-gradient 背景色后，用 <code>background-size</code> 属性将其限定在 1px 范围内，源码太长，就不贴了，如何引用见下，可惜的是，安卓4.3的机型不支持 <code>background-size</code> 的百分比取值</p>
+  <pre><code class="css">
+/*
+  支持两个传参
+  $direction： 可选关键词 top | right | bottom | left | v(左右俩边框) | h(上下俩边框) | all，默认 top
+  $color: 边框颜色，默认取变量表中的 $colorBorder
+*/
+.demo {
+  @include retina-one-px-bg;
+}
+  </code></pre>
+  <h3>方法三：scale 缩放</h3>
+  <p>该方法是目前为止最通用的一个方法，按照 css3 transform scale 的定义，理论上边框可以任意细（1/n px），直到设备的物理像素极限。所以，我们可以用 <code>scale(0.5)</code> 来缩小这一个像素的宽度。同样，sandal 为我们准备好了采用这种方法的 @mixin，需要注意的是，为不影响容器内本身的内容缩放，在这里，我们通常会将这个 border 的绘制运用在其伪元素上，这样就不影响正常内容了。</p>
+  <pre><code class="css">
+/*
+  支持两个参数
+  $direction: 可选关键词 top | right | bottom | left，默认 top
+  $color: 边框颜色，默认取变量表中的 $colorBorder
+*/
+.box {
+  position: relative;
+
+  &::befefore {
+    content: '';
+    @include retina-one-px-border;
+  }
+}
+  </code></pre>
+  <p>这里，Sandal 提供了 2 个 @extend <code>%border-tb</code> 和 <code>%border-all</code> 来实现快速实现，上下边框和四个边框描绘的定义</p>
+  <pre><code class="css">
+// border top & bottom
+.borer-tb {
+  @extend %border-tb;
+}
+
+// 将会编译成
+.border-tb {
+  position: relative;
+}
+.border-tb::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  right: 0;
+  height: 0;
+  transform: scaleY(0.5);
+  border-top: 1px solid #dbdbdb;
+  z-index: 1;
+}
+.border-tb::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  right: 0;
+  height: 0;
+  transform: scaleY(0.5);
+  border-top: 1px solid #dbdbdb;
+  top: auto;
+  bottom: 0;
+}
+  </code></pre>
+  <pre><code class="css">
+// border all
+.border-all {
+  @extend %border-all;
+}
+
+// 将会编译为
+.border-all {
+  position: relative;
+}
+.border-all::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  width: 200%;
+  height: 200%;
+  transform-origin: left top;
+  transform: scale(0.5);
+  border: 1px solid #dbdbdb;
+  z-index: -1;
+}
+
+  </code></pre>
+</div>

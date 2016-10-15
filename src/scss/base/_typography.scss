@@ -20,3 +20,15 @@ h1, h2, h3 {
 pre {
   margin-bottom: 2em;
 }
+
+// 重设示例代码段中注释字体的大小
+.hljs-comment {
+  font-size: 0.8em;
+}
+
+.dl-list dd + dt:before {
+  content: '';
+  display: block;
+  margin: 1em 0;
+  border-top: 1px solid $gray-lighter;
+}

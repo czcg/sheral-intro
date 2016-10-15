@@ -1,6 +1,7 @@
 <div class="jumbotron" id="sandalQueries">
-  <h2>media querie</h2>
-  <p>media query 其实是引用自另一个开源项目 <a href="http://paranoida.github.io/sass-mediaqueries/">Sass MediaQueries</a>。</p>
+  <h2>媒体查询</h2>
+  <p>media query 其实是引用自另一个开源项目 <a href="http://paranoida.github.io/sass-mediaqueries/" target="_blank">Sass MediaQueries<i class="fa fa-external-link"></i></a>。</p>
+  <p>从源码来看，这个文件里其他所有的 mixin 都是基于以下这个主 mixin 生成的：</p>
   <pre><code class="css">
 @mixin mq($args...) {
   $media-type: 'only screen';
@@ -24,4 +25,48 @@
   }
 }
   </code></pre>
+  <p>利用这个 mixin 我们基本上可以生成任何媒体查询了，下面看两个例子：</p>
+  <pre><code class="css">
+@include mq($max-width: 1000px) {
+  ...
+}
+
+// 以上代码将会编译成
+@media only screen and (max-width: 1000px) {
+  ...
+}
+  </code></pre>
+  <p>利用这个主生成器，我们可以进一步生成一些语法糖，供我们方便调用：</p>
+  <pre><code class="css">
+@mixin max-screen($max)
+  @include mq($max-width: $max) {
+    @content;
+  }
+}
+
+// 使用这个新定义的 mixin
+@include max-screen(1000px) {
+  ...
+}
+
+// 以上代码将会编译成
+@media only screen and (max-width: 1000px) {
+  ...
+}
+  </code></pre>
+  <p>在这个文件中，作者给我们定义了大概十多种 mixin 语法糖，但有些例如 iphone4、ipad 等特殊机型分辨率的判断，我这边建议慎用！以下提供一些推荐的 mixin，从命名上就能看出其用途了：</p>
+
+  <pre><code class="css">
+screen(min-width, max-width, orientation)
+min-screen(width)
+max-screen(width)
+
+screen-height(min-height, max-height, orientation)
+min-screen-height(height)
+max-screen-height(height)
+
+landscape
+portrait
+  </code></pre>
+<p>其实我们用的最多的应该就是 <code>min-screen</code>、<code>max-screen</code> 这些了，另外如果是针对类似 iPad 或者 iPhone 6 Plus 等屏幕可翻转设备的话，<code>landscape</code> 和 <code>portrait</code> 也是非常实用的。</p>
 </div>

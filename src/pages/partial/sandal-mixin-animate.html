@@ -1,0 +1,61 @@
+<div class="jumbotron" id="sandalMixinAnimate">
+  <h2>动画设置</h2>
+  <p>Sandal 为我们提供6组简单实用动画，这些动画定义，默认不产生样式，通过@include调用。其中淡入淡出那个，其实我们之前在 _mixin.scss 中已有定义，这里只是对其进行进一步的封装。</p>
+  <p>下面以 shrink-in/out 来举个例子，如何使用这些 @mixin：</p>
+  <pre><code class="css">
+/*
+  shrink-in 可传入两个参数
+  $className： 要生成的样式名主体，默认 shrink
+  $from：开始缩放时的大小，默认 0.815
+*/
+@include animation-shrink-in;
+
+// 代码将编译为
+.shrink-in {
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+}
+
+.shrink-in {
+  animation-name: shrinkIn;
+}
+
+@keyframes shrinkIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.815);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+  </code></pre>
+  <p> 以下为所有 6 类 @mixin 的名称以及默认参数，供参考。</p>
+  <dl class="dl-list" id="animateSort">
+    <dt>fade in/out</dt>
+    <dd><code>animation-fade-in($className: fade, $from: 0)</code></dd>
+    <dd><code>animation-fade-out($className: fade, $to: 0)</code></dd>
+    <dd><button class="btn btn-success btn-sm" data-animation-demo="fade"><i class="fa fa-youtube-play"></i> Fade Demo</button></dd>
+    <dt>shrink in/out</dt>
+    <dd><code>animation-shrink-in($className: shrink, $from: 0.815)</code></dd>
+    <dd><code>animation-shrink-out($className: shrink, $to: 1.185)</code></dd>
+    <dd><button class="btn btn-success btn-sm" data-animation-demo="shrink"><i class="fa fa-youtube-play"></i> Shrink Demo</button></dd>
+    <dt>down in/out</dt>
+    <dd><code>animation-down-in($className: down, $value: 100%)</code></dd>
+    <dd><code>animation-down-out($className: down, $value: 100%)</code></dd>
+    <dd><button class="btn btn-success btn-sm" data-animation-demo="down"><i class="fa fa-youtube-play"></i> Down Demo</button></dd>
+    <dt>up in/out</dt>
+    <dd><code>animation-up-in($className: up, $value: -100%)</code></dd>
+    <dd><code>animation-up-out($className: up, $value: -100%)</code></dd>
+    <dd><button class="btn btn-success btn-sm" data-animation-demo="up"><i class="fa fa-youtube-play"></i> Up Demo</button></dd>
+    <dt>left in/out</dt>
+    <dd><code>animation-left-in($className: left, $value: -100%)</code></dd>
+    <dd><code>animation-left-out($className: left, $value: -100%)</code></dd>
+    <dd><button class="btn btn-success btn-sm" data-animation-demo="left"><i class="fa fa-youtube-play"></i> Left Demo</button></dd>
+    <dt>right in/out</dt>
+    <dd><code>animation-right-in($className: right, $value: 100%)</code></dd>
+    <dd><code>animation-right-out($className: right, $value: 100%)</code></dd>
+    <dd><button class="btn btn-success btn-sm" data-animation-demo="right"><i class="fa fa-youtube-play"></i> Right Demo</button></dd>
+  </dl>
+</div>

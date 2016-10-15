@@ -1,0 +1,268 @@
+<div class="jumbotron" id="sandalMixinUtility">
+  <h2>常规 @mixin</h2>
+  <p>Mixin 应该是我们选择使用这种 css 预处理工具的一大理由之一，本框架中包含了一系列非常实用的 mixin 来简化我们的 css 编写以及进行模块化管理，最大限度的做到 DRY（Don't Repeat Yourself）。本文件中除了定义了一些 @mixin，还定义了一些 % 和 @function。</p>
+  <p>某些代码既定义了 @mixin，也定义了 %，开发者可以根据自己的需求或喜好调用。但是我建议谨慎使用 %，以下源码示例了这种巧妙的双定义法，只是如无必要，我们只用 @mixin 的代码就好：</p>
+  <pre><code class="css">
+@mixin center-block($extend: true) {
+  @if $extend {
+    @extend %center-block;
+  }
+  @else {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+%center-block {
+  @include center-block(false);
+}
+  </code></pre>
+  <p>我们可以用以下方法调用该方法：</p>
+  <pre><code class="css">
+.demo1 {
+  @include center-block;
+}
+
+.demo2 {
+  @extend %center-block;
+}
+
+// 将会编译成
+.demo1, .demo2 {
+  margin-left: auto;
+  margin-right: auto;
+}
+  </code></pre>
+  <h2>常用 @mixin 小工具</h2>
+  <ul class="list-unstyled mixin-list">
+    <li>
+      <p><strong>center-block:</strong> 块对象居中</p>
+      <pre><code class="css">
+.demo {
+  @include center-block;
+}
+
+// 将会编译成
+.demo {
+  margin-left: auto;
+  margin-right: auto;
+}
+      </code></pre>
+
+    </li>
+    <li>
+      <p><strong>clearfix:</strong>  用以自动清除内部 float 的浮动</p>
+      <pre><code class="css">
+.demo {
+  @include clearfix;
+}
+
+// 将会编译成
+.demo::before,
+.demo::after {
+  content: "";
+  display: table;
+}
+.demo::after {
+  clear: both;
+}
+      </code></pre>
+
+    </li>
+    <li>
+      <p><strong>hidden-clip:</strong> 只隐藏于视觉，屏幕浏览器可以阅读</p>
+      <pre><code class="css">
+.demo {
+  @include hidden-clip;
+}
+
+// 将会编译成
+.demo {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>ellipsis:</strong> 当容器内字符溢出时，用...标识出来</p>
+      <pre><code class="css">
+.demo {
+  @include ellipsis;
+}
+
+// 将会编译成
+.demo {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>ellipsis-lines:</strong> 多行省略，ellipsis-lines定义了多行省略，只支持老版本的 <code>flex-box</code>，咱忽略它！</p>
+    </li>
+    <li>
+      <p><strong>word-break:</strong> 字内断行，妈妈再也不用担心我对不齐啦！</p>
+      <pre><code class="css">
+.demo {
+  @include ellipsis;
+}
+
+// 将会编译成
+.demo {
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>disabled:</strong> 禁止样式设定，这里需要 <code>_variables.css</code> 里的预定义变量支持。且看编译完成的代码，为啥强行给这么多 <code>!important</code>？太暴力啦！</p>
+      <pre><code class="css">
+$colorDisabled: (text: #999, bg: #e3e3e3, border: #dbdbdb) !default;
+.demo {
+  @include disabled;
+}
+
+// 将会编译成
+.demo {
+  background-color: #e3e3e3 !important;
+  color: #999 !important;
+  cursor: default !important;
+  pointer-events: none !important;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>ir:</strong> 图片替换文字，视觉上将这些文字给隐藏了</p>
+      <pre><code class="css">
+.demo {
+  @include ir;
+}
+
+// 将会编译成
+.demo {
+  font: 0/0 a;
+  text-shadow: none;
+  border: 0 none;
+  color: transparent;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>triangle:</strong> 利用厚边框的夹角生成小三角形，通常可以利用一个容器的伪元素来实现，减少 dom 节点</p>
+      <pre><code class="css">
+/*
+  接受三个参数
+  $direction: 三角形方向，有 top|right|bottom|left 四个值，默认 top
+  $borderWidth: 三角形底边宽度，默认 6px
+  $borderColor: 三角形颜色， 默认是变量表里的值
+*/
+.demo::after {
+  @include triangle($borderColor: gray);
+}
+
+// 将会编译成
+.demo::after {
+  content: "";
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+.demo::after {
+  border-bottom: 6px solid gray;
+  border-left: 6px dashed transparent;
+  border-right: 6px dashed transparent;
+}
+
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>v-arrow:</strong> 方向箭头，一般在移动端的列表里还蛮常用的</p>
+      <pre><code class="css">
+/*
+  接受三个参数
+  $direction: 箭头方向，有 top|right|bottom|left 四个值，默认 right
+  $borderWidth: 箭头边宽， 默认 2px
+  $size： 箭头边长， 默认 10px
+*/
+.demo {
+  @include v-arrow;
+}
+
+// 将会编译成
+.demo {
+  display: inline-block;
+  vertical-align: middle;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>parent-state:</strong> 这个 @mixin 蛮有意思，改变父元素的状态，需注意，父元素不能有组合选择器，例如 <code>.a, .b {}</code></p>
+      <pre><code class="css">
+.parent{
+  .child{
+    @include parent-state(":hover"){
+      color: #f00;
+    }
+  }
+}
+
+// 将会编译成
+.parent:hover .child {
+  color: #f00;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>animation-fade:</strong> 这个 @mixin 生成一个 keyframes，设置渐隐渐现的动画关键帧</p>
+      <pre><code class="css">
+/*
+  接受三个参数
+  $name: keyframes 的名称，默认 animationFade
+  $from: opacity的开始值, 默认为 0
+  $to: opacity 的结束值， 默认 false，不指定值
+*/
+@include animation-fade;
+
+// 将会编译成
+@keyframes animationFade {
+  from {
+    opacity: 0;
+  }
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>animation-translate:</strong> 这个 @mixin 生成一个 translate 的关键帧</p>
+      <pre><code class="css">
+/*
+  接受三个参数
+  name: keyframes 的名称，默认 animationTranslate
+  $from: translate 开始值，默认 y -100%
+  $to: translate 结束值，默认 false，不指定值
+*/
+@include animation-translate($from: xy -50% -50%, $to: y -100%);
+
+// 将会编译成
+@keyframes animationTranslate {
+  from {
+    transform: translate(-50%, -50%);
+  }
+  to {
+    transform: translate(0, -100%);
+  }
+}
+      </code></pre>
+    </li>
+    <li></li>
+    <li>
+      <p><strong>retina border:</strong> retina 屏幕下 0.5px 的实现方式，这个将单独开个页面专讲。</p>
+    </li>
+  </ul>
+</div>

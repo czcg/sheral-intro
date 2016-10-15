@@ -44,15 +44,42 @@
         if ($(this).scrollTop() > fixedGap) {
           subNav.css({
             'position': 'fixed',
-            'width': `${subNavWidth}px`,
+            'top': `${fixedGap}px`,
             'left': `${subNavOffset.left}px`,
-            'top': `${fixedGap}px`
+            'width': `${subNavWidth}px`
           })
         } else {
           subNav.removeAttr('style')
         }
       })
       $(`[href="${hashStr}"]`).trigger('click')
+    },
+    // 点击取消遮罩层
+    removeMask() {
+      $(document).on('click', '.mask', function() {
+        $(this).removeAttr('class')
+      })
+    },
+    // 展示动画示例
+    showAnimateDemo() {
+      $(document).on('click', '[data-animation-demo]', function() {
+        let
+          animateName = $(this).data('animationDemo'),
+          animationend = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+          animationCount = 0
+        $('body').addClass('mask')
+        $('.demo-ball')
+          .addClass(animateName)
+          .one(animationend, function() {
+            animationCount ++
+            if (animationCount === 2) {
+              $(this).removeClass(animateName)
+              window.setTimeout(function() {
+                $('.mask').trigger('click')
+              }, 500)
+            }
+          })
+      })
     }
   }
 

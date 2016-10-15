@@ -62,3 +62,22 @@
     clear: both;
   }
 }
+
+// animation-fade
+// @include animation-fade
+// @include animation-fade($from: false, $to: .5);
+// @include animation-fade($from: 1, $to: 0);
+@mixin animation-fade($name: animationFade, $from: 0, $to: false){
+  @keyframes #{$name} {
+    @if $from {
+      from {
+        opacity: $from;
+      }
+    }
+    @if $to {
+      to {
+        opacity: $to;
+      }
+    }
+  }
+}

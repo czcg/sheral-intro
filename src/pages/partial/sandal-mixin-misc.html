@@ -1,0 +1,102 @@
+<div class="jumbotron" id="sandalMixinMisc">
+  <h2>杂项</h2>
+  <p>这里是一些 <code>_mixin.scss</code> 文件中没有归类的 @minxin, @extend 和 @function，有些使用价值不大的代码就不贴出来了，反正留着也不会显性编译出来。</p>
+  <ul class="list-unstyled mixin-list">
+    <li>
+      <p><strong>%bar-line:</strong> 独立 @extend，为列表绘制分割线，会依赖 <code>retina-one-px-border</code> 这个 @mixin 对 retina 屏绘制 0.5px 的超细线。</p>
+      <pre><code class="css">
+.bar-line {
+  @extend %bar-line;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>%gap-item:</strong> 一个每行上下都绘有细线的列表样式，为了显示效果，同样需要 <code>retina-one-px-border</code></p>
+      <pre><code class="css">
+.gap-item {
+  @extend %gap-item;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>结合：</strong> 利用以上 @extend 则能生成一个非常标准的 list，并且在 retina 屏上会有 0.5px 的超细横线，效果可以看 <a href="http://codepen.io/jimyuan/pen/JRvEwL" target="_blank">这里<i class="fa fa-external-link"></i></a></p>
+    <pre><code class="css">
+.bar {
+  @extend %item-v-right;
+  @extend %bar-line;
+  position: relative;
+}
+
+/*
+  以上代码很简单，但编译下来却是很长，
+  加上 autoprefixer 的处理，大概会生成 50 行代码
+  scss 的优势体现无疑
+*/
+    </code></pre>
+    </li>
+    <li>
+      <p><strong>%item-v-right:</strong> 右侧箭头跳转指向，需要依赖 <code>v-arrow</code> 这个 @mixin，需要注意的是右侧箭头是利用 <code>::after</code> 伪元素生成的，其会进行 absolute 定位，所以主元素务必需要有一个 <code>position: relative | absolute</code> 的定位。</p>
+      <pre><code class="css">
+.item-v-right {
+  @extend %item-v-right;
+  position: relative;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>通用 btn 样式定义:</strong> 以一个通用样式 <code>%btn-basic</code> 和 <code>btn-size</code>、<code>btn-color</code> 两个 @mixin 组合，可以定义多种样式的 button</p>
+      <pre><code class="css">
+.btn {
+  @extend %btn-basic;
+}
+
+// 将会产生一个通用的 button 样式
+.btn {
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  user-select: none;
+  padding: 0 1em;
+  white-space: nowrap;
+}
+      </code></pre>
+      <pre><code class="css">
+/*
+  定义一类特殊用途 button
+  btn-size 默认参数（需参数表内预定义值支持）：
+    ($padding: 1em, $height: $barHeight, $radius: 3px)
+  btn-color 默认参数：
+    ($colorText: #333, $colorBg: #666, $colorBorder: false)
+*/
+.btn-normal {
+  @include btn-size;
+  @include btn-color;
+}
+      </code></pre>
+    </li>
+    <li>
+      <p><strong>tint &amp; shade:</strong>这是 2 个处理颜色的函数，其实质是采用 scss 内置的颜色处理函数 <code>mix()</code> 通过白色或黑色来混合给定的颜色，使得到的颜色变深或变浅，可以通过以下代码和示例来体验一下</p>
+      <pre><code class="css">
+.left {
+  background-color: tint(green, 40%);
+}
+
+.center {
+  background-color: green;
+}
+
+.right {
+  background-color: shade(green, 40%);
+}
+      </code></pre>
+      <div class="color-block">
+        <div>tint(green, 40%)</div>
+        <div>green</div>
+        <div>shade(green, 40%)</div>
+      </div>
+    </li>
+  </ul>
+</div>
