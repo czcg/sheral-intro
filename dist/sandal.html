@@ -1,0 +1,718 @@
+<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"><title>Your Title</title><meta name="description" content="Your description."><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="apple-mobile-web-app-title" content="Your title"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/favicon.ico"><link rel="stylesheet" href="css/docs.css"><link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"><script src="//cdn.bootcss.com/highlight.js/9.7.0/highlight.min.js"></script></head><body><nav class="navbar navbar-fixed-top navbar-light bg-success" id="mainNav"><div class="container"><a class="navbar-brand" href="./"><i class="fa fa-cubes"></i></a><ul class="nav navbar-nav"><li class="nav-item"><a class="nav-link" href="./sandal.html">Sandal</a></li><li class="nav-item"><a class="nav-link" href="./sheral.html">Sheral</a></li></ul></div></nav><div class="container"><h1>Sandal 功能模块解析</h1><div class="row"><aside class="col-xs-3"><ul class="nav nav-pills nav-stacked" data-track="sandal"><li class="nav-item"><a class="nav-link" href="#sandalInfo"><i class="fa fa-circle-o"></i> 结构概述</a></li><li class="nav-item"><a class="nav-link" href="#sandalQueries"><i class="fa fa-circle-o"></i> 媒体查询</a></li><li class="nav-item"><a class="nav-link" href="#sandalMixinUtility"><i class="fa fa-circle-o"></i> 常规 @mixin</a></li><li class="nav-item"><a class="nav-link" href="#sandalMixinLayout"><i class="fa fa-circle-o"></i> 布局 @mixin</a></li><li class="nav-item"><a class="nav-link" href="#sandalMixinHalfPx"><i class="fa fa-circle-o"></i> 0.5px @mixin</a></li><li class="nav-item"><a class="nav-link" href="#sandalMixinMisc"><i class="fa fa-circle-o"></i> 杂项</a></li><li class="nav-item"><a class="nav-link" href="#sandalMixinAnimate"><i class="fa fa-circle-o"></i> 动画设置</a></li><li><div class="dropdown-divider"></div></li><li class="nav-item"><a class="nav-link" href="#sandalHelper"><i class="fa fa-circle-o"></i> 辅助类定义</a></li></ul></aside><div class="col-xs-9"><div class="jumbotron" id="sandalInfo"><h2>结构概述</h2><p>Sandal 项目中的 Scss 文件，可以看成有 2 部分组成，它们的包含关系如下：</p><pre><code class="css">
+core
+  ├─ reset
+  └─ function
+      ├─ variables
+      ├─ mixin
+      ├─ media-queries
+      └─ animation
+ext
+  ├─ icons
+  ├─ helper
+  ├─ grid
+  └─ page-slide
+  </code></pre><p>对于主体框架（core），我们可以以两种方式使引入，根据需要决定吧：</p><pre><code class="scss">
+// 集成了所有的基础功能，并且不输出任何样式
+@import 'node_modules/sass-sandal/function';
+
+// 在引入基础功能的前提下，引入重置样式 _reset.scss，其实主体就是 normallize.css 啦！
+@import 'node_modules/sass-sandal/core';
+  </code></pre><h2>文件功能简述</h2><p>sandal 包括两个集合文件（core，function）和两个文件夹（core，ext）。其中 core 文件夹中为核心基础文件，包括 variables，media-queries，mixin，animation，reset；ext文件夹中是一些扩展文件，目前包括 svg icons，grid 网格系统，helper 基础 class，page-slide 为页面切换 class。</p><p>两个集合文件（core，function）导入的都是 core 中的文件，区别在于 core 除了提供基本功能之外还会生成一份 reset 样式，而 function 则只提供基本功能。至于 ext 中的文件则属于额外的一些模块扩展，可根据需求导入。</p><h3>core 文件</h3><table class="table table-desc"><thead><tr><th>模块名</th><th>作用描述</th></tr></thead><tbody><tr><td><a href="https://github.com/marvin1023/sandal/blob/master/core/_variables.scss">variables</a></td><td>负责基础变量的文件，如常用的颜色，字体等变量。这个源码自己看看即可。</td></tr><tr><td>media-queries</td><td>负责响应式断点判断的文件，来自 paranoida 的 sass-mediaqueries。</td></tr><tr><td>mixin</td><td>负责功能方面的文件。这里我们大概分成三个部分，一个是混合部分即mixin（，一个是 placeholder 选择器部分即 %，最后就是我们的 function 函数部分。常用的 include 及 extend 就是在这里定义的。</td></tr><tr><td>animation</td><td>提供六组简单实用动画：fade-in/out, shrink-in/out, up-in/out, down-in/out，left-in/out，right-in/out。默认不产生样式，通过 include 调用。</td></tr><tr><td>reset</td><td>在 normalize 的基础上，根据目前我们大家的使用习惯进行了一些归零行动，及基础文字颜色，clearfix，box-sizing 等。</td></tr></tbody></table><h3>ext 文件</h3><table class="table table-desc"><thead><tr><th>模块名</th><th>作用描述</th></tr></thead><tbody><tr><td>helper</td><td>提供常用的基础 class，如 clearfix, full-width 等。</td></tr><tr><td>grid</td><td>移动端的网格系统，分为 row 和 col。</td></tr><tr><td>icons</td><td>分为绘制的 icon 和 svg 图标两种，可参考 icons 文件夹中的 icons.html。</td></tr><tr><td>page-slide</td><td>设置了两种页面进出的动画方式：左进右出和右进做出。</td></tr></tbody></table></div><div class="jumbotron" id="sandalQueries"><h2>媒体查询 <small>( _media-queries.scss )</small></h2><p>media query 其实是引用自另一个开源项目 <a href="http://paranoida.github.io/sass-mediaqueries/" target="_blank">Sass MediaQueries<i class="fa fa-external-link"></i></a>。</p><p>从源码来看，这个文件里其他所有的 mixin 都是基于以下这个主 mixin 生成的：</p><pre><code class="css">
+@mixin mq($args...) {
+  $media-type: 'only screen';
+  $media-type-key: 'media-type';
+  $args: keywords($args);
+  $expr: '';
+
+  @if map-has-key($args, $media-type-key) {
+    $media-type: map-get($args, $media-type-key);
+    $args: map-remove($args, $media-type-key);
+  }
+
+  @each $key, $value in $args {
+    @if $value {
+      $expr: "#{$expr} and (#{$key}: #{$value})";
+    }
+  }
+
+  @media #{$media-type} #{$expr} {
+    @content;
+  }
+}
+  </code></pre><p>利用这个 mixin 我们基本上可以生成任何媒体查询了，下面看两个例子：</p><pre><code class="css">
+@include mq($max-width: 1000px) {
+  ...
+}
+
+// 以上代码将会编译成
+@media only screen and (max-width: 1000px) {
+  ...
+}
+  </code></pre><p>利用这个主生成器，我们可以进一步生成一些语法糖，供我们方便调用：</p><pre><code class="css">
+@mixin max-screen($max)
+  @include mq($max-width: $max) {
+    @content;
+  }
+}
+
+// 使用这个新定义的 mixin
+@include max-screen(1000px) {
+  ...
+}
+
+// 以上代码将会编译成
+@media only screen and (max-width: 1000px) {
+  ...
+}
+  </code></pre><p>在这个文件中，作者给我们定义了大概十多种 mixin 语法糖，但有些例如 iphone4、ipad 等特殊机型分辨率的判断，我这边建议慎用！以下提供一些推荐的 mixin，从命名上就能看出其用途了：</p><pre><code class="css">
+screen(min-width, max-width, orientation)
+min-screen(width)
+max-screen(width)
+
+screen-height(min-height, max-height, orientation)
+min-screen-height(height)
+max-screen-height(height)
+
+landscape
+portrait
+  </code></pre><p>其实我们用的最多的应该就是 <code>min-screen</code>、<code>max-screen</code> 这些了，另外如果是针对类似 iPad 或者 iPhone 6 Plus 等屏幕可翻转设备的话，<code>landscape</code> 和 <code>portrait</code> 也是非常实用的。</p></div><div class="jumbotron" id="sandalMixinUtility"><h2>常规 @mixin <small>( _mixin.scss )</small></h2><p>Mixin 应该是我们选择使用这种 css 预处理工具的一大理由之一，本框架中包含了一系列非常实用的 mixin 来简化我们的 css 编写以及进行模块化管理，最大限度的做到 DRY（Don't Repeat Yourself）。本文件中除了定义了一些 @mixin，还定义了一些 % 和 @function。</p><p>某些代码既定义了 @mixin，也定义了 %，开发者可以根据自己的需求或喜好调用。但是我建议谨慎使用 %，以下源码示例了这种巧妙的双定义法，只是如无必要，我们只用 @mixin 的代码就好：</p><pre><code class="css">
+@mixin center-block($extend: true) {
+  @if $extend {
+    @extend %center-block;
+  }
+  @else {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+%center-block {
+  @include center-block(false);
+}
+  </code></pre><p>我们可以用以下方法调用该方法：</p><pre><code class="css">
+.demo1 {
+  @include center-block;
+}
+
+.demo2 {
+  @extend %center-block;
+}
+
+// 将会编译成
+.demo1, .demo2 {
+  margin-left: auto;
+  margin-right: auto;
+}
+  </code></pre><h2>常用 @mixin 小工具</h2><ul class="list-unstyled mixin-list"><li><p><strong>center-block:</strong> 块对象居中</p><pre><code class="css">
+.demo {
+  @include center-block;
+}
+
+// 将会编译成
+.demo {
+  margin-left: auto;
+  margin-right: auto;
+}
+      </code></pre></li><li><p><strong>clearfix:</strong> 用以自动清除内部 float 的浮动</p><pre><code class="css">
+.demo {
+  @include clearfix;
+}
+
+// 将会编译成
+.demo::before,
+.demo::after {
+  content: "";
+  display: table;
+}
+.demo::after {
+  clear: both;
+}
+      </code></pre></li><li><p><strong>hidden-clip:</strong> 只隐藏于视觉，屏幕浏览器可以阅读</p><pre><code class="css">
+.demo {
+  @include hidden-clip;
+}
+
+// 将会编译成
+.demo {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+      </code></pre></li><li><p><strong>ellipsis:</strong> 当容器内字符溢出时，用...标识出来</p><pre><code class="css">
+.demo {
+  @include ellipsis;
+}
+
+// 将会编译成
+.demo {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+      </code></pre></li><li><p><strong>ellipsis-lines:</strong> 多行省略，ellipsis-lines定义了多行省略，只支持老版本的 <code>flex-box</code>，咱忽略它！</p></li><li><p><strong>word-break:</strong> 字内断行，妈妈再也不用担心我对不齐啦！</p><pre><code class="css">
+.demo {
+  @include ellipsis;
+}
+
+// 将会编译成
+.demo {
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+      </code></pre></li><li><p><strong>disabled:</strong> 禁止样式设定，这里需要 <code>_variables.css</code> 里的预定义变量支持。且看编译完成的代码，为啥强行给这么多 <code>!important</code>？太暴力啦！</p><pre><code class="css">
+$colorDisabled: (text: #999, bg: #e3e3e3, border: #dbdbdb) !default;
+.demo {
+  @include disabled;
+}
+
+// 将会编译成
+.demo {
+  background-color: #e3e3e3 !important;
+  color: #999 !important;
+  cursor: default !important;
+  pointer-events: none !important;
+}
+      </code></pre></li><li><p><strong>ir:</strong> 图片替换文字，视觉上将这些文字给隐藏了</p><pre><code class="css">
+.demo {
+  @include ir;
+}
+
+// 将会编译成
+.demo {
+  font: 0/0 a;
+  text-shadow: none;
+  border: 0 none;
+  color: transparent;
+}
+      </code></pre></li><li><p><strong>triangle:</strong> 利用厚边框的夹角生成小三角形，通常可以利用一个容器的伪元素来实现，减少 dom 节点</p><pre><code class="css">
+/*
+  接受三个参数
+  $direction: 三角形方向，有 top|right|bottom|left 四个值，默认 top
+  $borderWidth: 三角形底边宽度，默认 6px
+  $borderColor: 三角形颜色， 默认是变量表里的值
+*/
+.demo::after {
+  @include triangle($borderColor: gray);
+}
+
+// 将会编译成
+.demo::after {
+  content: "";
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+.demo::after {
+  border-bottom: 6px solid gray;
+  border-left: 6px dashed transparent;
+  border-right: 6px dashed transparent;
+}
+
+      </code></pre></li><li><p><strong>v-arrow:</strong> 方向箭头，一般在移动端的列表里还蛮常用的</p><pre><code class="css">
+/*
+  接受三个参数
+  $direction: 箭头方向，有 top|right|bottom|left 四个值，默认 right
+  $borderWidth: 箭头边宽， 默认 2px
+  $size： 箭头边长， 默认 10px
+*/
+.demo {
+  @include v-arrow;
+}
+
+// 将会编译成
+.demo {
+  display: inline-block;
+  vertical-align: middle;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+      </code></pre></li><li><p><strong>parent-state:</strong> 这个 @mixin 蛮有意思，改变父元素的状态，需注意，父元素不能有组合选择器，例如 <code>.a, .b {}</code></p><pre><code class="css">
+.parent{
+  .child{
+    @include parent-state(":hover"){
+      color: #f00;
+    }
+  }
+}
+
+// 将会编译成
+.parent:hover .child {
+  color: #f00;
+}
+      </code></pre></li><li><p><strong>animation-fade:</strong> 这个 @mixin 生成一个 keyframes，设置渐隐渐现的动画关键帧</p><pre><code class="css">
+/*
+  接受三个参数
+  $name: keyframes 的名称，默认 animationFade
+  $from: opacity的开始值, 默认为 0
+  $to: opacity 的结束值， 默认 false，不指定值
+*/
+@include animation-fade;
+
+// 将会编译成
+@keyframes animationFade {
+  from {
+    opacity: 0;
+  }
+}
+      </code></pre></li><li><p><strong>animation-translate:</strong> 这个 @mixin 生成一个 translate 的关键帧</p><pre><code class="css">
+/*
+  接受三个参数
+  name: keyframes 的名称，默认 animationTranslate
+  $from: translate 开始值，默认 y -100%
+  $to: translate 结束值，默认 false，不指定值
+*/
+@include animation-translate($from: xy -50% -50%, $to: y -100%);
+
+// 将会编译成
+@keyframes animationTranslate {
+  from {
+    transform: translate(-50%, -50%);
+  }
+  to {
+    transform: translate(0, -100%);
+  }
+}
+      </code></pre></li><li></li><li><p><strong>retina border:</strong> retina 屏幕下 0.5px 的实现方式，这个将单独开个页面专讲。</p></li></ul></div><div class="jumbotron" id="sandalMixinLayout"><h2>布局 @mixin <small>( _mixin.scss )</small></h2><ul class="list-unstyled mixin-list"><li><p><strong>fixed:</strong> 给容器设置 fixed 定位</p><pre><code class="css">
+// 1. 不带参数，top 置顶
+.fix-top {
+  @include fixed;
+}
+
+// 将会编译成
+.fix-top {
+  position: fixed;
+  left: 0; right: 0;
+  top: 0;
+}
+      </code></pre><pre><code class="css">
+// 2. 传入数值，为 top 赋值
+.fix-px {
+  @include fixed(40px);
+}
+
+// 将会编译成
+.fix-px {
+  position: fixed;
+  left: 0; right: 0;
+  top: 40px;
+}
+      </code></pre><pre><code class="css">
+// 3. 传入 bottom 关键词，置底
+.fix-bottom {
+  @include fixed(bottom);
+}
+
+// 将会编译成
+.fix-bottom {
+  position: fixed;
+  left: 0; right: 0;
+  bottom: 0;
+}
+      </code></pre></li><li><p><strong>justify:</strong> Flex 模式下的 space-between 对齐方式（感觉莫意义啊~~）</p><pre><code class="css">
+.demo {
+  @include justify;
+}
+
+// 将会编译成
+.demo {
+  display: flex;
+  justify-content: space-between;
+}
+      </code></pre></li><li><p><strong>equal-table:</strong> 以表格布局方式等分一行中的容器</p><pre><code class="css">
+/*
+  默认为 li 子元素等分
+  可以传入指定子元素选择符参与等分
+  eg: equal-table('a')
+*/
+ul {
+  @include equal-table;
+}
+
+// 将会编译成
+ul {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+ul li {
+  display: table-cell;
+}
+      </code></pre></li><li><p><strong>equal-flex:</strong> 以 flex 布局来等分一行中的子元素</p><pre><code class="css">
+/*
+  与 equal-table 类似，
+  也可传入指定子元素选择符
+  eg: equal-table('a')
+*/
+div {
+  @include equal-flex('a');
+}
+
+// 将会编译成
+div {
+  display: flex;
+}
+div a {
+  flex: 1;
+  width: 1%;
+}
+      </code></pre></li><li><p><strong>line-equal-gap:</strong> 使用这个 @mixin 产生和 flex 布局中 <code>jusify-content: space-around | space-between</code> 那样的效果，所不同的是，这里是指定 gap 宽度而不管容器宽度的</p><pre><code class="css">
+/*
+  该 @mixin 可定制 3 个参数：
+  $gap:   间隔宽度，默认 10px
+  $child: 与上例类似，可指定子元素选择符，默认 'li'
+  $lr:    指定是否需要在两头也设置 gap，默认是 true
+*/
+div {
+  @include line-equal-gap('span');
+}
+
+// 将会编译成
+div {
+  display: flex;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+div span {
+  flex: 1;
+  width: 1%;
+}
+div span:not(:first-of-type) {
+  margin-left: 10px;
+}
+      </code></pre></li><li><p><strong>line-equal-item:</strong> 感觉这个就是 justify-content 的排布啊，默认为 <code>space-around</code> 排布，传入 <code>false</code> 参数则为 <code>space-between</code> 排布</p><pre><code class="css">
+/* 无参数（使用默认参数） */
+.demo1 {
+  @include line-equal-item;
+}
+
+// 将会编译成
+.demo1 {
+  display: flex;
+  justify-content: space-between;
+}
+demo1::before, demo1::after {
+  content: "";
+}
+      </code></pre><pre><code class="css">
+/* false 参数，不要两头的 gap */
+.demo2 {
+  @include line-equal-item(false);
+}
+
+// 将会编译成
+.demo2 {
+  display: flex;
+  justify-content: space-between;
+}
+      </code></pre></li><li><p><strong>center-flex:</strong> 使用 flex 布局方式使容器中子元素居中，可传入 <code>x</code> 或 <code>y</code> 参数各自轴向居中，默认 <code>both</code>，横向和竖向同时居中</p><pre><code class="css">
+.center {
+  @include: center-flex;
+}
+
+// 将会编译成
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+      </code></pre></li><li><p><strong>center-translate:</strong> 传统居中方式，先绝对定位，用 <code>left: 50%</code> 或 <code>top: 50%</code> 偏移后再用 <code>translate</code> 来修正，同样，接受 <code>x</code> 或 <code>y</code> 传参，默认 <code>both</code></p><pre><code class="css">
+.center-y {
+  @include center-translate(y);
+}
+
+// 将会编译成
+.center-y {
+  position: absolute;
+  top: 50%;
+  transform: translate3d(0, -50%, 0);
+}
+      </code></pre></li><li><p><strong>object-wrap:</strong> 这个 @mixin ... 貌似没看出应用场景啊（呆若木鸡.jpg）</p><pre><code class="css">
+/*
+  接受两个参数
+  $percent: wrap 的百分比，默认 100%
+  $child: 用于子元素选择器，默认 'img'
+*/
+.wrap {
+  @include object-wrap($child: span)
+}
+
+// 将会编译成
+.wrap {
+  position: relative;
+  padding-top: 100%;
+  height: 0;
+}
+.wrap span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+      </code></pre></li></ul></div><div class="jumbotron" id="sandalMixinHalfPx"><h2>0.5px @mixin <small>( _mixin.scss )</small></h2><p>自苹果的智能手机 iPhone4 问世后，"retina" 一词就为人所津津乐道了。视网膜屏以 4 个像素描绘普通屏幕的 1 个像素，其显示的精致度大大提高了，因此，1px 宽度的细线，在 retina 屏上是 2 个物理像素的宽，使得 0.5px 的绘制宽度能够得以实现。下面介绍几种绘制 0.5px 的方法，在 sandal 中已经封装成 @mixin，已方便使用</p><h3>方法一：媒体查询</h3><p>该方法使用媒体查询，检查 webkit 浏览器的私有属性 <code>-webkit-min-device-pixel-ratio</code>，如果其值为 2 或 3(plus 机型) 则肯定支持 0.5px，该方法在 iOS9+ 中得以实现，使用场景不是很广泛，我们直接看源码吧</p><pre><code class="css">
+@mixin retina-one-px() {
+    @supports (border-width: 0.5px) {
+        @media only
+          screen and (-webkit-min-device-pixel-ratio: 2),
+          screen and (-webkit-min-device-pixel-ratio: 3) {
+            border-width: 0.5px;
+        }
+    }
+}
+
+// 调用
+.demo {
+  @include retina-one-px;
+  border-top-style: solid;
+}
+  </code></pre><h3>方法二：渐变背景</h3><p>其原理也很简单，绘制一个 50% 单位的纯色 linear-gradient 背景色后，用 <code>background-size</code> 属性将其限定在 1px 范围内，源码太长，就不贴了，如何引用见下，可惜的是，安卓4.3的机型不支持 <code>background-size</code> 的百分比取值</p><pre><code class="css">
+/*
+  支持两个传参
+  $direction： 可选关键词 top | right | bottom | left | v(左右俩边框) | h(上下俩边框) | all，默认 top
+  $color: 边框颜色，默认取变量表中的 $colorBorder
+*/
+.demo {
+  @include retina-one-px-bg;
+}
+  </code></pre><h3>方法三：scale 缩放</h3><p>该方法是目前为止最通用的一个方法，按照 css3 transform scale 的定义，理论上边框可以任意细（1/n px），直到设备的物理像素极限。所以，我们可以用 <code>scale(0.5)</code> 来缩小这一个像素的宽度。同样，sandal 为我们准备好了采用这种方法的 @mixin，需要注意的是，为不影响容器内本身的内容缩放，在这里，我们通常会将这个 border 的绘制运用在其伪元素上，这样就不影响正常内容了。</p><pre><code class="css">
+/*
+  支持两个参数
+  $direction: 可选关键词 top | right | bottom | left，默认 top
+  $color: 边框颜色，默认取变量表中的 $colorBorder
+*/
+.box {
+  position: relative;
+
+  &::befefore {
+    content: '';
+    @include retina-one-px-border;
+  }
+}
+  </code></pre><p>这里，Sandal 提供了 2 个 @extend <code>%border-tb</code> 和 <code>%border-all</code> 来实现快速实现，上下边框和四个边框描绘的定义</p><pre><code class="css">
+// border top & bottom
+.borer-tb {
+  @extend %border-tb;
+}
+
+// 将会编译成
+.border-tb {
+  position: relative;
+}
+.border-tb::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  right: 0;
+  height: 0;
+  transform: scaleY(0.5);
+  border-top: 1px solid #dbdbdb;
+  z-index: 1;
+}
+.border-tb::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  right: 0;
+  height: 0;
+  transform: scaleY(0.5);
+  border-top: 1px solid #dbdbdb;
+  top: auto;
+  bottom: 0;
+}
+  </code></pre><pre><code class="css">
+// border all
+.border-all {
+  @extend %border-all;
+}
+
+// 将会编译为
+.border-all {
+  position: relative;
+}
+.border-all::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  width: 200%;
+  height: 200%;
+  transform-origin: left top;
+  transform: scale(0.5);
+  border: 1px solid #dbdbdb;
+  z-index: -1;
+}
+
+  </code></pre></div><div class="jumbotron" id="sandalMixinMisc"><h2>杂项 <small>( _mixin.scss )</small></h2><p>这里是一些 <code>_mixin.scss</code> 文件中没有归类的 @minxin, @extend 和 @function，有些使用价值不大的代码就不贴出来了，反正留着也不会显性编译出来。</p><ul class="list-unstyled mixin-list"><li><p><strong>%bar-line:</strong> 独立 @extend，为列表绘制分割线，会依赖 <code>retina-one-px-border</code> 这个 @mixin 对 retina 屏绘制 0.5px 的超细线。</p><pre><code class="css">
+.bar-line {
+  @extend %bar-line;
+}
+      </code></pre></li><li><p><strong>%gap-item:</strong> 一个每行上下都绘有细线的列表样式，为了显示效果，同样需要 <code>retina-one-px-border</code></p><pre><code class="css">
+.gap-item {
+  @extend %gap-item;
+}
+      </code></pre></li><li><p><strong>结合：</strong> 利用以上 @extend 则能生成一个非常标准的 list，并且在 retina 屏上会有 0.5px 的超细横线，效果可以看 <a href="http://codepen.io/jimyuan/pen/JRvEwL" target="_blank">这里<i class="fa fa-external-link"></i></a></p><pre><code class="css">
+.bar {
+  @extend %item-v-right;
+  @extend %bar-line;
+  position: relative;
+}
+
+/*
+  以上代码很简单，但编译下来却是很长，
+  加上 autoprefixer 的处理，大概会生成 50 行代码
+  scss 的优势体现无疑
+*/
+    </code></pre></li><li><p><strong>%item-v-right:</strong> 右侧箭头跳转指向，需要依赖 <code>v-arrow</code> 这个 @mixin，需要注意的是右侧箭头是利用 <code>::after</code> 伪元素生成的，其会进行 absolute 定位，所以主元素务必需要有一个 <code>position: relative | absolute</code> 的定位。</p><pre><code class="css">
+.item-v-right {
+  @extend %item-v-right;
+  position: relative;
+}
+      </code></pre></li><li><p><strong>通用 btn 样式定义:</strong> 以一个通用样式 <code>%btn-basic</code> 和 <code>btn-size</code>、<code>btn-color</code> 两个 @mixin 组合，可以定义多种样式的 button</p><pre><code class="css">
+.btn {
+  @extend %btn-basic;
+}
+
+// 将会产生一个通用的 button 样式
+.btn {
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  user-select: none;
+  padding: 0 1em;
+  white-space: nowrap;
+}
+      </code></pre><pre><code class="css">
+/*
+  定义一类特殊用途 button
+  btn-size 默认参数（需参数表内预定义值支持）：
+    ($padding: 1em, $height: $barHeight, $radius: 3px)
+  btn-color 默认参数：
+    ($colorText: #333, $colorBg: #666, $colorBorder: false)
+*/
+.btn-normal {
+  @include btn-size;
+  @include btn-color;
+}
+      </code></pre></li><li><p><strong>tint &amp; shade:</strong>这是 2 个处理颜色的函数，其实质是采用 scss 内置的颜色处理函数 <code>mix()</code> 通过白色或黑色来混合给定的颜色，使得到的颜色变深或变浅，可以通过以下代码和示例来体验一下</p><pre><code class="css">
+.left {
+  background-color: tint(green, 40%);
+}
+
+.center {
+  background-color: green;
+}
+
+.right {
+  background-color: shade(green, 40%);
+}
+      </code></pre><div class="color-block"><div>tint(green, 40%)</div><div>green</div><div>shade(green, 40%)</div></div></li></ul></div><div class="jumbotron" id="sandalMixinAnimate"><h2>动画设置 <small>( _mixin.scss )</small></h2><p>Sandal 为我们提供6组简单实用动画，这些动画定义，默认不产生样式，通过@include调用。其中淡入淡出那个，其实我们之前在 _mixin.scss 中已有定义，这里只是对其进行进一步的封装。</p><p>下面以 shrink-in/out 来举个例子，如何使用这些 @mixin：</p><pre><code class="css">
+/*
+  shrink-in 可传入两个参数
+  $className： 要生成的样式名主体，默认 shrink
+  $from：开始缩放时的大小，默认 0.815
+*/
+@include animation-shrink-in;
+
+// 代码将编译为
+.shrink-in {
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+}
+
+.shrink-in {
+  animation-name: shrinkIn;
+}
+
+@keyframes shrinkIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.815);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+  </code></pre><p>以下为所有 6 类 @mixin 的名称以及默认参数，供参考。</p><dl class="dl-list" id="animateSort"><dt>fade in/out</dt><dd><code>animation-fade-in($className: fade, $from: 0)</code></dd><dd><code>animation-fade-out($className: fade, $to: 0)</code></dd><dd><button class="btn btn-success btn-sm" data-animation-demo="fade"><i class="fa fa-youtube-play"></i> Fade Demo</button></dd><dt>shrink in/out</dt><dd><code>animation-shrink-in($className: shrink, $from: 0.815)</code></dd><dd><code>animation-shrink-out($className: shrink, $to: 1.185)</code></dd><dd><button class="btn btn-success btn-sm" data-animation-demo="shrink"><i class="fa fa-youtube-play"></i> Shrink Demo</button></dd><dt>down in/out</dt><dd><code>animation-down-in($className: down, $value: 100%)</code></dd><dd><code>animation-down-out($className: down, $value: 100%)</code></dd><dd><button class="btn btn-success btn-sm" data-animation-demo="down"><i class="fa fa-youtube-play"></i> Down Demo</button></dd><dt>up in/out</dt><dd><code>animation-up-in($className: up, $value: -100%)</code></dd><dd><code>animation-up-out($className: up, $value: -100%)</code></dd><dd><button class="btn btn-success btn-sm" data-animation-demo="up"><i class="fa fa-youtube-play"></i> Up Demo</button></dd><dt>left in/out</dt><dd><code>animation-left-in($className: left, $value: -100%)</code></dd><dd><code>animation-left-out($className: left, $value: -100%)</code></dd><dd><button class="btn btn-success btn-sm" data-animation-demo="left"><i class="fa fa-youtube-play"></i> Left Demo</button></dd><dt>right in/out</dt><dd><code>animation-right-in($className: right, $value: 100%)</code></dd><dd><code>animation-right-out($className: right, $value: 100%)</code></dd><dd><button class="btn btn-success btn-sm" data-animation-demo="right"><i class="fa fa-youtube-play"></i> Right Demo</button></dd></dl></div><div class="jumbotron" id="sandalHelper"><h2>辅助类定义 <small>( ext / _helper.scss )</small></h2><p>这是一个辅助类的预定义，根据需要可通过人工方式 import 进来。</p><p>这个模块内定义的内容很简单，大家看看源码就好了：</p><pre><code class="css">
+@charset "UTF-8";
+//-----------------------------------------------------
+// helper scss
+//-----------------------------------------------------
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.fs12 {
+  font-size: 12px;
+}
+
+.grayc {
+  color: #ccc;
+}
+
+.gray9 {
+  color: #999;
+}
+
+.gray6 {
+  color: #666;
+}
+
+.p10 {
+  padding: 10px;
+}
+
+.plr10 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
+.mlr10 {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+// 左右两端对齐
+.justify {
+  @extend %justify;
+}
+
+.ellipsis {
+  @extend %ellipsis;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.pos-s {
+  position: static !important;
+}
+
+.fixed-bottom {
+  @include fixed(bottom);
+}
+  </code></pre></div></div></div></div><div class="demo-ball"></div><script src="js/docs.js"></script></body></html>
