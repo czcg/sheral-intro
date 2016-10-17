@@ -1,23 +1,20 @@
 {
-  "name": "site-template",
-  "version": "2.0.0",
-  "description": "This is a normal template for develop team. Use scss & es6.",
+  "name": "sheral-doc",
+  "version": "1.0.0",
+  "description": "This is a intro with a UI framework for mobile device",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jimyuan/tmpl.git"
+    "url": "https://github.com/czcg/sheral-intro"
   },
   "keywords": [
-    "gulp",
-    "sass",
-    "static",
-    "babel"
+    "sandal", "sheral"
   ],
   "authors": [
     "Jim Yuan <aquarior@gmail.com>"
   ],
   "license": "MIT",
   "engines": {
-    "node": ">= 4.0"
+    "node": ">= 5.0"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
