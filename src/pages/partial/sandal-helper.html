@@ -1,0 +1,77 @@
+<div class="jumbotron" id="sandalHelper">
+  <h2>辅助类定义 <small>( ext / _helper.scss )</small></h2>
+  <p>这是一个辅助类的预定义，根据需要可通过人工方式 import 进来。</p>
+  <p>这个模块内定义的内容很简单，大家看看源码就好了：</p>
+  <pre><code class="css">
+@charset "UTF-8";
+//-----------------------------------------------------
+// helper scss
+//-----------------------------------------------------
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.fs12 {
+  font-size: 12px;
+}
+
+.grayc {
+  color: #ccc;
+}
+
+.gray9 {
+  color: #999;
+}
+
+.gray6 {
+  color: #666;
+}
+
+.p10 {
+  padding: 10px;
+}
+
+.plr10 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
+.mlr10 {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+// 左右两端对齐
+.justify {
+  @extend %justify;
+}
+
+.ellipsis {
+  @extend %ellipsis;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.pos-s {
+  position: static !important;
+}
+
+.fixed-bottom {
+  @include fixed(bottom);
+}
+  </code></pre>
+</div>
