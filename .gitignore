@@ -1,8 +1,6 @@
 .DS_Store
 .sass-cache
 *.zip
-app/*.html
-app/css
-app/js
+app
 node_modules
 bower_components

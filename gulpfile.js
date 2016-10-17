@@ -10,8 +10,8 @@
   // path setting
   _ = {
     app: 'app', dist: 'dist',
-    js: 'app/js', css: 'app/css', img: 'app/img',
-    scss: 'src/scss', tmpl: 'src/pages',  es6: 'src/es6'
+    js: 'app/js', css: 'app/css',
+    img: 'src/img', scss: 'src/scss', tmpl: 'src/pages',  es6: 'src/es6'
   }
 
   // BrowserSync notify style
@@ -32,7 +32,7 @@
   ]
 
   /* launch the Server */
-  gulp.task('bs', ['scss', 'es6', 'static'], () => {
+  gulp.task('bs', ['scss', 'es6', 'static', 'optimg'], () => {
     $.browserSync.init({
       ui: false,
       server: { baseDir: './' },
@@ -94,6 +94,7 @@
   /* es6 => es5 (use present-es2015) */
   gulp.task('es6', () => {
     return gulp.src(`${_.es6}/**/*.js`)
+      .pipe($.plumber())
       .pipe($.sourcemaps.init())
       .pipe($.babel({
         presets: ['es2015']
@@ -106,15 +107,23 @@
   })
 
   /* optimize images */
-  gulp.task('image', ['clean'], () => {
+  gulp.task('optimg', () => {
     return gulp.src(`${_.img}/**/*`)
+      .pipe($.plumber())
       .pipe($.imagemin({
         progressive: true
       }))
-      .pipe(gulp.dest(`${_.dist}/img/`))
+      .pipe(gulp.dest(`${_.app}/img`))
       .pipe($.size({
         title: 'IMAGE files:'
       }))
+  })
+
+  /* copy 'app/img' => 'dist/img' */
+  gulp.task('image', ['clean'], () => {
+    return gulp.src(`${_.app}/img/**/*`)
+      .pipe($.plumber())
+      .pipe(gulp.dest(`${_.dist}/img`))
   })
 
   /* join & minify css & js */
@@ -151,6 +160,8 @@
 
   /* watch */
   gulp.task('watch', () => {
+    // Watch image files
+    gulp.watch(`${_.img}/**/*.{png,jpg,jpeg,gif,ico}`, ['optimg'])
     // Watch scss files
     gulp.watch(`${_.scss}/**/*.scss`, ['scss'])
     // Watch es6 files
