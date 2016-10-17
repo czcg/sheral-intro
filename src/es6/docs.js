@@ -15,6 +15,7 @@
     // Sandal Menu 设置
     subNavHandel() {
       let subNav = $('[data-track]'),
+        win = $(window),
         hashStr = window.location.hash || subNav.find('a').first().attr('href'),
         subNavOffset = subNav.offset(),
         subNavWidth = subNav.outerWidth(),
@@ -38,9 +39,12 @@
         $(hashStr)
           .removeClass('jumb-fade-out').addClass('jumb-fade-in')
           .siblings().removeClass('jumb-fade-in').addClass('jumb-fade-out')
+
+        // 切换不同子栏目时注意保持滚动条从头开始
+        win.scrollTop(0)
       })
       // 滚动时 fixed 左侧菜单
-      $(window).on('scroll', function() {
+      win.on('scroll', function() {
         if ($(this).scrollTop() > fixedGap && subNavOffset) {
           subNav.css({
             'position': 'fixed',
@@ -52,7 +56,6 @@
           subNav.removeAttr('style')
         }
       })
-      $(`[href="${hashStr}"]`).trigger('click')
     },
     // 点击取消遮罩层
     removeMask() {

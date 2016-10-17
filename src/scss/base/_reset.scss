@@ -1,5 +1,11 @@
 @charset 'utf-8';
 
+// 导航栏 fixed 后需空出的地方
 body {
   padding-top: 5em;
+}
+
+// 代码块底部空行
+pre {
+  margin-bottom: 2em;
 }

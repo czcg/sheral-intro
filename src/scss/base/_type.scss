@@ -12,23 +12,14 @@ h1, h2, h3 {
   }
 }
 
-.figure {
-  max-width: 60%;
-  margin: 1em 0;
-}
-
-pre {
-  margin-bottom: 2em;
-}
-
 // 重设示例代码段中注释字体的大小
 .hljs-comment {
   font-size: 0.8em;
 }
 
-.dl-list dd + dt:before {
-  content: '';
-  display: block;
-  margin: 1em 0;
-  border-top: 1px solid $gray-lighter;
+// 无样式 ul
+.list-unstyled {
+  margin-left: 0;
+  padding-left: 0;
+  list-style-type: none;
 }

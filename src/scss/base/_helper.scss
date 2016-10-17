@@ -1,0 +1,21 @@
+@charset 'utf-8';
+
+/* 一些辅助类的 class 定义 */
+// figer image style reset
+.figure {
+  max-width: 60%;
+  margin: 1em 0;
+}
+
+// 重定义 dl list 样式
+.dl-list dd + dt:before {
+  content: '';
+  display: block;
+  margin: 1em 0;
+  border-top: 1px solid $gray-lighter;
+}
+
+// Dividers (basically an `<hr>`) within the dropdown
+.dropdown-divider {
+  @include nav-divider($dropdown-divider-bg);
+}
