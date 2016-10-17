@@ -41,7 +41,7 @@
       })
       // 滚动时 fixed 左侧菜单
       $(window).on('scroll', function() {
-        if ($(this).scrollTop() > fixedGap) {
+        if ($(this).scrollTop() > fixedGap && subNavOffset) {
           subNav.css({
             'position': 'fixed',
             'top': `${fixedGap}px`,
